@@ -31,6 +31,12 @@ public:
   */
   KalmanFilter ekf_;
 
+  ///* if this is false, laser measurements will be ignored (except for init)
+  bool use_laser_;
+
+  ///* if this is false, radar measurements will be ignored (except for init)
+  bool use_radar_;
+
 private:
   // check whether the tracking toolbox was initialized or not (first measurement)
   bool is_initialized_;
