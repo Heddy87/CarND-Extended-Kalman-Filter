@@ -47,6 +47,14 @@ FusionEKF::FusionEKF() {
   */
   H_laser_ << 1, 0, 0, 0,
               0, 1, 0, 0;
+
+  // Initial covariance Matrix
+  ekf_.P_ = MatrixXd(4,4);
+  ekf_.P_ << 10,  0,   0,   0,
+             0,   10,  0,   0,
+             0,   0,   100, 0,
+             0,   0,   0,   100;
+
 }
 
 /**
@@ -60,22 +68,22 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Initialization
    ****************************************************************************/
-  cout << "is_initialized: " << is_initialized_ << endl;
   if (!is_initialized_) {
     /**
       * Initialize the state ekf_.x_ with the first measurement.
       * Create the covariance matrix.
       * Remember: you'll need to convert radar from polar to cartesian coordinates.
     */
-    ekf_.x_ = VectorXd(4);
     // first measurement
+    ekf_.x_ = VectorXd(4);
     cout << "measurement_type: " << measurement_pack.sensor_type_ << endl;
+
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
       */
-      float rho = measurement_pack.raw_measurements_[0];     // range
-      float phi = measurement_pack.raw_measurements_[1];     // bearing
+      float rho     = measurement_pack.raw_measurements_[0]; // range
+      float phi     = measurement_pack.raw_measurements_[1]; // bearing
       float rho_dot = measurement_pack.raw_measurements_[2]; // rate
 
       cout << "rho: " << rho << endl;
@@ -87,14 +95,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       while (phi < -M_PI) phi += 2.0 * M_PI;
 
       // Convert each coordinate
-      float x = rho * cos(phi);
-      float y = rho * sin(phi);
+      float x  = rho * cos(phi);
+      float y  = rho * sin(phi);
       float vx = rho_dot * cos(phi);
       float vy = rho_dot * sin(phi);
 
       ekf_.x_ << x, y, vx, vy;
-    }
-    else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+
+    } else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
       Initialize state. Default velocities to 0
       */
@@ -102,17 +110,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       float y = measurement_pack.raw_measurements_[1];
       ekf_.x_ << x, y, 0, 0;
     }
+
     // Deal with special case where values are < than a very small number
     if (fabs(ekf_.x_(0)) < EPS and fabs(ekf_.x_(1)) < EPS){
       ekf_.x_(0) = EPS;
       ekf_.x_(1) = EPS;
     }
-    // Initial covariance Matrix
-    ekf_.P_ = MatrixXd(4, 4);
-    ekf_.P_ << 1, 0, 0, 0,
-               0, 1, 0, 0,
-               0, 0, 1000, 0,
-               0, 0, 0, 1000;
 
     // Initial results
     cout << "EKF init: " << ekf_.x_ << endl;
@@ -138,10 +141,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   // State transiction Matrix update
   ekf_.F_ = MatrixXd(4, 4);
-  ekf_.F_ << 1, 0, dt, 0,
-             0, 1, 0,  dt,
-             0, 0, 1,  0,
-             0, 0, 0,  1;
+  ekf_.F_ << 1,  0,  dt, 0,
+             0,  1,  0,  dt,
+             0,  0,  1,  0,
+             0,  0,  0,  1;
+
 
   // Compute the Noise Covatiance Matrix Q
   float noise_ax = 9.0;

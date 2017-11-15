@@ -11,6 +11,11 @@ The measurements data is provided in the form of a [simulator](https://github.co
 The key metrics are [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) values for both position and velocity of the tracked
 object.
 
+## Results
+
+When tested on the dataset 2 we get a RMSE set of [0.1405, 0.6668, 0.6050, 1.6355]
+
+However when tested on the dataset 2 we get a RMSE set of [0.0732, 0.0963, 0.3813, 0.4782]
 ---
 
 ## Dependencies
