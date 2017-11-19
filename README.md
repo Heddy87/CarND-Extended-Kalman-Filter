@@ -11,11 +11,28 @@ The measurements data is provided in the form of a [simulator](https://github.co
 The key metrics are [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) values for both position and velocity of the tracked
 object.
 
+## Implementation
+
 ## Results
 
-When tested on the dataset 2 we get a RMSE set of [0.1405, 0.6668, 0.6050, 1.6355]
+The success metrics for this project are the RMSE values for 2 datasets,
+these shoule be below `0.11` for `P x` and `P y` and below `0.52` for `V x` and `V y`.
 
-However when tested on the dataset 2 we get a RMSE set of [0.0732, 0.0963, 0.3813, 0.4782]
+The folowing table lists the results of both datasets:
+
+| RMSE | Dataset 1 | Dataset 2 |
+|------|-----------|-----------|
+| P x  |  0.1405   |  0.0732   |
+| P y  |  0.6668   |  0.0963   |
+| V x  |  0.6050   |  0.3813   |
+| V y  |  1.6355   |  0.4782   |
+|------|-----------|-----------|
+
+This is somehow unexpected as the dataset 1 should be the "easy" one to which every
+implementation should be able to get results below the desired marks, and dataset 2
+should be the "hard" one, showcasing a more precise implementation.
+
+It is unclear at the moment why this is the case.
 
 ---
 
