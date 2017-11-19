@@ -38,9 +38,42 @@ It is unclear at the moment why this is the case.
 
 #### Using only one senor
 
+For both datasets a run with only one sensor, `radar` or `lidar` was also measured. 
 
+> You can test this yourself by setting the vars `use_laser_` and `use_radar_` in `src/FusionEKF.cpp`.
+
+Here are the results:
+
+##### Dataset 1
+
+| RMSE | only RADAR | only LIDAR |
+|------|-----------|-----------|
+| P x  |  11.5299   |  0.1473   |
+| P y  |  7.9951   |  0.1152   |
+| V x  |  9.9502   |  0.6781   |
+| V y  |  8.8659   |  0.5324   |
+
+Interesting points here:
+- It behaves better with only `Lidar` than with both sensors, indicating tha the `Radar` measurements hurt more then help the prediction.
+- The issues with `Radar` measurements appear more prevalent to be on the `y` axis. Unclear why this is the case at this moment.
+
+##### Dataset 2
+
+| RMSE | only RADAR | only LIDAR |
+|------|-----------|-----------|
+| P x  |  0.2706   |  0.1167   |
+| P y  |  0.3869   |  0.1256   |
+| V x  |  0.6780   |  0.5929   |
+| V y  |  0.9585   |  0.5774   |
+
+A few points of interest:
+- This time it behaves slightly worse with only `Lidar` data then with both.
+- Again it behaves better with only `Lidar` then with only `Radar` data. 
+- The discrepancy between axis `x` and `y` is not so apparent if present at all. 
 
 ### Images from the simulator
+
+> With both `Radar` and `Lidar` data.
 
 #### Dataset 1
 
