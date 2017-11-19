@@ -11,12 +11,15 @@ The measurements data is provided in the form of a [simulator](https://github.co
 The key metrics are [RMSE](https://en.wikipedia.org/wiki/Root-mean-square_deviation) values for both position and velocity of the tracked
 object.
 
-## Implementation
-
 ## Results
 
-The success metrics for this project are the RMSE values for 2 datasets,
-these shoule be below `0.11` for `P x` and `P y` and below `0.52` for `V x` and `V y`.
+The success metrics for this project are the RMSE values for 2 datasets.
+
+The values shoule be below:
+- `0.11` for `P x` and `P y`.
+- `0.52` for `V x` and `V y`.
+
+### RMSE values
 
 The folowing table lists the results of both datasets:
 
@@ -26,7 +29,6 @@ The folowing table lists the results of both datasets:
 | P y  |  0.6668   |  0.0963   |
 | V x  |  0.6050   |  0.3813   |
 | V y  |  1.6355   |  0.4782   |
-|------|-----------|-----------|
 
 This is somehow unexpected as the dataset 1 should be the "easy" one to which every
 implementation should be able to get results below the desired marks, and dataset 2
@@ -34,7 +36,52 @@ should be the "hard" one, showcasing a more precise implementation.
 
 It is unclear at the moment why this is the case.
 
+#### Using only one senor
+
+
+
+### Images from the simulator
+
+#### Dataset 1
+
+![alt text](results/EKF-dataset-1.png "Dataset 1")
+
+#### Dataset 2
+
+![alt text](results/EKF-dataset-2.png "Dataset 2")
+
+## Implementation
+
+The code skeleton for this project was provided by udacity on [this repo](https://github.com/udacity/CarND-Extended-Kalman-Filter-Project).
+
+The main program in under the `src` directory.
+```
+.
+├── FusionEKF.cpp
+├── FusionEKF.h
+├── json.hpp
+├── kalman_filter.cpp
+├── kalman_filter.h
+├── main.cpp
+├── measurement_package.h
+├── tools.cpp
+└── tools.h
+```
+
+The main changes were to the folowing files:
+
+- `main.cpp` - reads in data, runs the Kalman filter and calculates RMSE values after each measurement.
+- `FusionEKF.cpp` - initializes the filter, calls the `Predict` function and the `Update` function
+- `kalman_filter.cpp`- implementation of the `Predict` and `Update` function, for both `lidar` and `radar`.
+- `tools.cpp` - tool functions to calculate `RMSE` and the `Jacobian` matrix, used to convert polar to cartesian coordinates
+
+### Unit tests
+
+The code is not tested at the moment, this is somthing I want to add in the future using [Google's gTest](https://github.com/google/googletest) framework.
+
 ---
+
+# Contributing
 
 ## Dependencies
 
@@ -69,12 +116,3 @@ using the following settings:
 ## Code Style
 
 Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
-
-## Generating Additional Data
-
-This is optional!
-
-If you'd like to generate your own radar and lidar data, see the
-[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
-Matlab scripts that can generate additional data.
-
